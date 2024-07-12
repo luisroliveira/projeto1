@@ -58,22 +58,24 @@ Os dados climáticos serão obtidos por meio da API da Open-Meteo (https://api.o
 
 ## Passos do Projeto
 
-### 1. Coleta de Dados
+### Parte 1
+
+#### 1. Coleta de Dados
 
 Coletaremos dados sobre o status dos voos e as condições climáticas correspondentes durante um período de 30 dias, a partir de 7 de abril de 2024.
 
-### 2. Pré-processamento dos Dados
+#### 2. Pré-processamento dos Dados
 
 - Definição de tipos
 - Tratamento de dados ausentes
 - Normalização e discretização
 - Limpeza de dados (univariado, bivariado e multivariado)
 
-### 3. Estatísticas Descritivas
+#### 3. Estatísticas Descritivas
 
 Apresentaremos estatísticas descritivas dos dados coletados, incluindo visualizações para melhor compreensão.
 
-### 4. Teste de Hipóteses
+#### 4. Teste de Hipóteses
 
 Realizaremos testes de hipóteses para comparar valores de categorias, como a taxa de cancelamento em diferentes condições climáticas. Visualizaremos as diferenças encontradas.
 
@@ -82,6 +84,56 @@ Realizaremos testes de hipóteses para comparar valores de categorias, como a ta
 - Integração de dados ou extração de dados da Web.
 - Utilização de técnicas não cobertas nas aulas.
 
+### Parte 2
+
+#### 1. Definir a coluna alvo
+
+Transformaremos o problema em uma tarefa de classificação, utilizando a coluna 'Status' como alvo. Esta coluna será binarizada para indicar se o voo ocorreu sem problemas ('Voos sem Problemas') ou se foi atrasado ou cancelado ('Atrasado ou Cancelado'). O objetivo é estabelecer uma relação entre as condições climáticas na origem e no destino com a variável alvo.
+
+#### 2. Separar os dados em treinamento, validação e teste
+
+Os dados serão divididos de forma estratificada em três conjuntos:
+
+- 70% para treinamento
+- 15% para validação
+- 15% para teste
+  
+Em seguida, aplicaremos técnicas de balanceamento por oversampling nos conjuntos de treinamento e validação para lidar com qualquer desequilíbrio na variável alvo.
+
+#### 3. Selecionar 4 algoritmos
+
+Selecionamos quatro algoritmos de aprendizado de máquina disponíveis na biblioteca scikit-learn para a tarefa de classificação:
+
+- Logistic Regression
+- Decision Tree
+- Random Forest
+- Gradient Boosting
+
+#### 4. Adicionar MLFlow no treinamento dos modelos para rastreamento
+
+Implementaremos o MLFlow para rastrear e registrar todos os experimentos. Isso inclui:
+
+- Registro dos hiperparâmetros utilizados em cada experimento
+- Armazenamento dos modelos treinados
+- Registro das métricas de avaliação
+- Salvamento dos resultados na pasta mlruns para consulta futura
+
+#### 5.  Executar uma ferramenta de seleção de hiper-parâmetros
+
+Utilizaremos a biblioteca Optuna para a otimização de hiperparâmetros, garantindo a escolha dos melhores valores para cada algoritmo. O processo será realizado da seguinte forma:
+
+- Selecionar poucos hiperparâmetros por algortimo (max. 3)
+- Selecionar o modelo com melhor resultado na métrica de avaliação
+- Executar o melhor modelo de cada algoritmo no conjunto de teste
+
+#### 6. Realizar diagnóstico do melhor modelo geral e melhorá-lo
+
+Após a seleção do melhor modelo, realizaremos um diagnóstico detalhado utilizando técnicas de interpretação de modelo como SHAP e LIME. Essas técnicas nos permitirão entender melhor as influências das variáveis climáticas nas previsões do modelo. A partir dessa análise, faremos ajustes adicionais para melhorar o desempenho do modelo.
+
+#### Bônus
+- Utilizar auto-sklearn: Implementação do auto-sklearn para automatizar o processo de seleção de modelos e ajuste de hiperparâmetros.
+- Clustering para entendimento dos dados: Aplicação de técnicas de clustering para identificar padrões nos dados que possam fornecer insights adicionais sobre as condições climáticas e seu impacto nos voos.
+
 ## Análise
 
-A partir dos dados coletados, realizaremos uma análise para identificar possíveis correlações entre as condições climáticas e o status dos voos (atrasos, cancelamentos, etc.). Essa análise permitirá entender melhor como diferentes variáveis climáticas podem impactar as operações de voo nos principais aeroportos do Brasil.
+A partir dos dados coletados, realizaremos uma análise abrangente para identificar possíveis correlações entre as condições climáticas e o status dos voos (atrasos, cancelamentos, etc.). Esta análise permitirá entender melhor como diferentes variáveis climáticas impactam as operações de voo nos principais aeroportos do Brasil. Isso fornecerá insights valiosos para as companhias aéreas e autoridades aeroportuárias na tomada de decisões informadas para melhorar a pontualidade e a segurança dos voos.
